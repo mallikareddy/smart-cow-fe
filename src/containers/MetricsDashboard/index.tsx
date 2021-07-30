@@ -22,12 +22,11 @@ export const MetricsDashboard = () => {
       setUsage();
 
       const interval2 = setInterval(async ()=> {
-        console.log(CPUusage.length, "*******")
         if (CPUusage.length > 20) {
           clearInterval(interval2);
         }
         setUsage();
-      }, 1000);
+      }, 3000);
       interval = interval2;
 
       async function setUsage() {
