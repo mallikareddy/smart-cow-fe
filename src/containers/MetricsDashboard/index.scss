@@ -1,0 +1,12 @@
+.dashboard {
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .line-chart{
+        margin: 1rem;
+        padding: 1rem;
+    }
+}

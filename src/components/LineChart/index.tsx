@@ -1,15 +1,20 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { lineChartConfig } from './chartConfiguration';
 
 
 export const LineChart = (props: any) => {
+  const [values, setChartValues] = useState<number[]>([]);
   const {title, chartValues} = props;
+  console.log(chartValues, "*****")
+  useEffect(()=> {
+    setChartValues([...chartValues]);
+  }, [chartValues]);
   const chartOptions = {
     ...lineChartConfig,
     title: { ...lineChartConfig.title, text: title },
-    series: chartValues,
+    series: values,
   };
   return (
     <div>

@@ -3,7 +3,7 @@ export const lineChartConfig = {
     type: "line",
     className: 'line-chart',
     height: 300,
-    width: 600,
+    width: 400,
   },
   title: {
     text: "CPU Usage (%)",
