@@ -52,7 +52,7 @@ export const MetricsDashboard = () => {
       let usage: number[][] = [];
       setUsage();
       const interval2 = setInterval(async ()=> {
-        if (usage.length > 5) {
+        if (usage.length > 24) {
           usage.shift();
           // clearInterval(interval2);
         }
