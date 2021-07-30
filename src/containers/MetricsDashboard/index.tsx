@@ -4,7 +4,7 @@ import {getCPUUsage, getGPUUsage, getRAMUsage} from "./../../services/apiRequest
 import "./index.scss";
 
 export const MetricsDashboard = () => {
-  const [CPUUsage, setCPUUsage] = useState<number[]>([]);
+  const [CPUUsage, setCPUUsage] = useState<number[][]>([]);
   const [GPUUsage, setGPUUsage] = useState<number[]>([]);
   const [RAMUsage, setRAMUsage] = useState<number[]>([]);
   let interval:any = undefined;
@@ -17,34 +17,55 @@ export const MetricsDashboard = () => {
   }, []);
 
   const updateCPUMetricsData = async() => {
-    (async function() {
-      let CPUusage: number[] = [];
-      setUsage();
+    updateMetricsData(setCPUUsage, getCPUUsage);
+    // (async function() {
+    //   let CPUusage: number[][] = [];
+    //   setUsage();
 
+    //   const interval2 = setInterval(async ()=> {
+    //     if (CPUusage.length > 20) {
+    //       CPUusage.shift();
+    //       // clearInterval(interval2);
+    //     }
+    //     setUsage();
+    //   }, 5000);
+    //   interval = interval2;
+
+    //   async function setUsage() {
+    //     const cpu:number = await getCPUUsage();
+    //     CPUusage.push([new Date().getTime(), cpu]);
+    //     setCPUUsage([...CPUusage]);
+    //   }
+    // })();
+  }
+
+  const updateGPUMetricsData = () => {
+    updateMetricsData(setGPUUsage, getGPUUsage);
+  }
+
+  const updateRAMMetricsData = () => {
+    updateMetricsData(setRAMUsage, getRAMUsage);
+  }
+
+  const updateMetricsData = async(setter: any, getter: any) => {
+    (async function() {
+      let usage: number[][] = [];
+      setUsage();
       const interval2 = setInterval(async ()=> {
-        if (CPUusage.length > 20) {
-          clearInterval(interval2);
+        if (usage.length > 5) {
+          usage.shift();
+          // clearInterval(interval2);
         }
         setUsage();
-      }, 3000);
+      }, 6000);
       interval = interval2;
 
       async function setUsage() {
-        const cpu:number = await getCPUUsage();
-        CPUusage.push(cpu);
-        setCPUUsage([...CPUusage]);
+        const res:number= await getter();
+        usage.push([new Date().getTime(), res]);
+        setter([...usage]);
       }
     })();
-  }
-
-  const updateGPUMetricsData = async() => {
-    const gpu:number[]= await getGPUUsage();
-    setGPUUsage([...gpu]);
-  }
-
-  const updateRAMMetricsData = async() => {
-    const ram:number[] = await getRAMUsage();
-    setRAMUsage([...ram]);
   }
 
   return (
