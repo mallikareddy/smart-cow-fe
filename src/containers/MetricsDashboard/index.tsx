@@ -21,25 +21,21 @@ export const MetricsDashboard = () => {
       let CPUusage: number[] = [];
       setUsage();
 
-      interval = setInterval(async ()=> {
+      const interval2 = setInterval(async ()=> {
+        console.log(CPUusage.length, "*******")
+        if (CPUusage.length > 20) {
+          clearInterval(interval2);
+        }
         setUsage();
-      }, 5000);
+      }, 1000);
+      interval = interval2;
 
       async function setUsage() {
         const cpu:number = await getCPUUsage();
         CPUusage.push(cpu);
         setCPUUsage([...CPUusage]);
       }
-
-      if(CPUusage.length > 20){ 
-        //currently setting length to 20 so that it doesn't run continuously
-        clearMetricsInterval(interval);
-      }
     })();
-  }
-
-  const clearMetricsInterval = (interval: any) => {
-    return () => clearInterval(interval);
   }
 
   const updateGPUMetricsData = async() => {
